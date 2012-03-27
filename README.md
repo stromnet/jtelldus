@@ -37,8 +37,13 @@ Example commands:
 
 This is clearly not optimal, but better than requiering some kind of native-lib.
 
-Refs
-----
+Who & why?
+----------
+JTelldus is written by Johan Ström, head of Stromnet.
+The goal is to be able to implement telldus support into OpenHAB (http://code.google.com/p/openhab/), but doing so in a clean mannor (ie, not some native library).
 
+License
+-------
+LGPL
 
 
