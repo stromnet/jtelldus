@@ -124,6 +124,10 @@ public class TelldusClient implements Runnable {
 		dispatcher.addEventListener(listener);
 	}
 
+	public void unregisterEventListener(TelldusEvent.Listener listener) {
+		dispatcher.removeEventListener(listener);
+	}
+
 
 
 	/** Controlling help functions **/

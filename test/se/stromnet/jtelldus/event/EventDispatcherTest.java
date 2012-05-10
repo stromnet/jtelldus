@@ -2,7 +2,6 @@ package se.stromnet.jtelldus.event;
 
 import se.stromnet.jtelldus.Protocol.*;
 import se.stromnet.jtelldus.Message;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -109,6 +108,14 @@ public class EventDispatcherTest {
 
 		// Dispatch third sensor event, no one gets it.
 		ed.dispatchEvent(se);
+		assertNull(listener.event);
+		assertNull(listener2.event);
+
+		// Remove listener 2, make sure it does not get more events
+		ed.removeEventListener(listener2);
+
+		// dispatch the second again; listener2 would have received it
+		ed.dispatchEvent(de);
 		assertNull(listener.event);
 		assertNull(listener2.event);
 	}

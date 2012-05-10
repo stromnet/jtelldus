@@ -1,11 +1,17 @@
 package se.stromnet.jtelldus.event;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * This is an internal JTelldus class which provides the event dispatching
+ * functionality.
+ *
+ * Event listeners are added, and for any interface it implements it will
+ * get events for.
  *
  * @author johan
  */
@@ -62,6 +68,21 @@ public class EventDispatcher {
 		
 		if(listener instanceof TDControllerEvent.Listener)
 			addEventListener(TDControllerEvent.class, listener);
+	}
+
+
+	/**
+	 * Remove an event listener.
+	 * All instances in all classes will be removed.
+	 */
+	public void removeEventListener(TelldusEvent.Listener listener) {
+		for(Class clazz: listeners.keySet()) {
+			Iterator<? extends TelldusEvent.Listener> i = listeners.get(clazz).iterator();
+			while(i.hasNext()) {
+				if(i.next() == listener)
+					i.remove();
+			}
+		}
 	}
 
 	/**

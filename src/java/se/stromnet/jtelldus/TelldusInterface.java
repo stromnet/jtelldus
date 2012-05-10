@@ -8,6 +8,7 @@ import se.stromnet.jtelldus.Protocol.ControllerType;
 import se.stromnet.jtelldus.Protocol.DeviceMethod;
 import se.stromnet.jtelldus.Protocol.DeviceType;
 import se.stromnet.jtelldus.Protocol.ErrorCode;
+import se.stromnet.jtelldus.event.TelldusEvent;
 
 /**
  * Wrapper around TelldusClient with all method implementations.
@@ -25,6 +26,29 @@ public class TelldusInterface {
 
 	public void close() {
 		client.close();
+	}
+
+	/**
+	 * Register a listener for a specific type of events.
+	 * The type of listener is determined by the interface. All listeners
+	 * are based on the TelldusEvent.Listener interface, but implementing that
+	 * by it self will not accomplish anything. Instead, implement one or
+	 * more of the xxxEvent.Listener interfaces.
+	 *
+	 * A listener can implement multiple interfaces. No lengthy operations
+	 * should take place in the callbacks, they should return as soon as possible.
+	 * 
+	 * @param listener A instance of an object implementing a listener.
+	 */
+	public void registerListener(TelldusEvent.Listener listener) {
+		client.registerEventListener(listener);
+	}
+
+	/**
+	 * Unregister a previously registered event listener.s
+	 */
+	public void unregisterListener(TelldusEvent.Listener listener) {
+		client.unregisterEventListener(listener);
 	}
 
 	/**
