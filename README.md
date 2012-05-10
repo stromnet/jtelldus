@@ -16,7 +16,7 @@ However, it has not undergone very much real-life testing (basically only test/.
 
 Dependencies
 ------------
-The only extenral dependency is slf4j (http://www.slf4j.org/) for logging. Also, `socat` or similar is required (see quirk below).
+The only external dependency is slf4j (http://www.slf4j.org/) for logging. Also, a patched telldusd or `socat` (or similar) is required (see quirk below).
 
 Building
 --------
@@ -24,12 +24,16 @@ Currently there are no build files commited, since they are tied in to some othe
 
 Quirk
 -----
-Since telldusd listens to two unix sockets (/tmp/TelldusClient and /tmp/TelldusEvent), we got some problems talking to it from pure java, UNIX sockets are not supported
-in normal Java.
+The trunk version of telldusd listens to two unix sockets (/tmp/TelldusClient and /tmp/TelldusEvent), which we got some problems talking to from pure java; UNIX sockets are not supported in normal Java.
 
 Workaround
 ----------
-Until (if ever) telldusd can listen to TCP ports direclty, use `socat` (http://www.dest-unreach.org/socat/) or similar utility to bridge these UNIX sockets to regular TCP sockets.
+I've implemented TCP support in a fork of telldusd. It tries to follow telldusd-trunk, but is not yet ready for merging do trunk.
+It can be fetched from https://github.com/stromnet/telldus/tree/tcp.
+
+For background on whats left before a merge can happen, please see http://www.telldus.com/forum/viewtopic.php?f=22&t=1966 (Swedish only though).
+
+For those of you not wanting to run my patched telldusd, use `socat` (http://www.dest-unreach.org/socat/) or similar utility to bridge these UNIX sockets to regular TCP sockets.
 Example commands:
 
 	socat tcp-listen:9999,fork unix-connect:/tmp/TelldusEvents &
