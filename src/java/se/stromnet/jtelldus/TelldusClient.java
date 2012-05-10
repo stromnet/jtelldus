@@ -67,6 +67,7 @@ public class TelldusClient implements Runnable {
 	public void run() {
 		while (run) {
 			if (!events.connect()) {
+				// Connection failed; wait 1s and try again until it works out.
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {
@@ -78,8 +79,13 @@ public class TelldusClient implements Runnable {
 				// Use same buffer size as ClientCommunicationHandler.cpp
 				ByteBuffer bb = ByteBuffer.allocate(2000);
 				while (run) {
-					log.trace("Reading...");
+					if(log.isTraceEnabled())
+						log.trace("Reading...");
+					
 					int len = events.read(bb);
+
+					if(log.isTraceEnabled())
+						log.trace("Got "+ len +" bytes on socket");
 
 					if (!Message.nextIsString(bb)) {
 						throw new IllegalStateException("Illegal data in buffer, expected string");
@@ -88,6 +94,7 @@ public class TelldusClient implements Runnable {
 					Message msg = new Message(bb);
 					if(!handleEvent(msg)) {
 						// Unhandled; clear out bb
+						log.info("Unhandled event. "+bb.remaining()+" bytes data left in buffer, throwing it away");
 						bb.clear();
 					}
 				}
@@ -104,6 +111,10 @@ public class TelldusClient implements Runnable {
 				}
 			}
 		}
+		
+		try {
+			events.disconnect();
+		}catch(IOException ex) {}
 	}
 
 	/**
@@ -112,6 +123,9 @@ public class TelldusClient implements Runnable {
 	private boolean handleEvent(Message msg) {
 		TelldusEvent event = EventFactory.createEvent(msg);
 
+		if(log.isDebugEnabled())
+			log.debug("Received event "+event);
+		
 		if(event == null)
 			return false;
 
@@ -151,6 +165,16 @@ public class TelldusClient implements Runnable {
 		return sendToService(m, true);
 	}
 
+
+	/**
+	 * Send a control message to the telldus daemon.
+	 *
+	 * If it fails and the retry flag is set, we will try to re-send it once.
+	 * 
+	 * @param m
+	 * @param retry
+	 * @return
+	 */
 	private ByteBuffer sendToService(Message m, boolean retry) {
 		/**
 		 * Unfortunately telldusd cannot handle more than one message
@@ -184,8 +208,5 @@ public class TelldusClient implements Runnable {
 			} catch (IOException ex) {
 			}
 		}
-
 	}
-
-
 }

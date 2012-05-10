@@ -11,11 +11,36 @@ import se.stromnet.jtelldus.Protocol.ErrorCode;
 import se.stromnet.jtelldus.event.TelldusEvent;
 
 /**
- * Wrapper around TelldusClient with all method implementations.
+ * Entry point for applications utilizing jtellduslib.
+ * It provides all "application" level functionality, delegating the actual
+ * work to an internal TelldusClient instance.
  *
- * Similar to client/telldus-core.cpp.
+ * The API tries to be as similar as possible to the original C libtelldus, at
+ * least with regards to naming the tdXXX functions.
  *
- * @author johan
+ * The app should create one instance of this class. It will connect to
+ * the appointed host/ports. Since telldusd has two seperate sockets,
+ * two ports are required. clientPort is the port used for sending
+ * explicit commands. eventPort is the port use to get event notifications.
+ *
+ * When created, a background notification thread will try to connect to the
+ * appointed event port.
+ * The client socket is only used when a explicit command is executed.
+ *
+ * Commands are executed by simply calling the tdXXX functions. They try to mimic
+ * the regular C API in naming and parameters, but in some cases they have been
+ * altered to suite a Java based implementation (such as lists).
+ *
+ * Notifications are delivered to the client app via Listeners. The client provides
+ * a class which implements one ore more the TDxxxEvent.Listener interfaces.
+ * For each interface implemented, the instance will have a function which is
+ * called whenever an event arrives.
+ * 
+ * The events are dispatched in an ordered fashion, so first registered listener
+ * will get it first. The event dispatching is synchronous, so make sure to not
+ * perform any lengthy operations in the callback.
+ *
+ * @author Johan Ström <johan@stromnet.se>
  */
 public class TelldusInterface {
 	protected TelldusClient client;
@@ -33,7 +58,7 @@ public class TelldusInterface {
 	 * The type of listener is determined by the interface. All listeners
 	 * are based on the TelldusEvent.Listener interface, but implementing that
 	 * by it self will not accomplish anything. Instead, implement one or
-	 * more of the xxxEvent.Listener interfaces.
+	 * more of the TDxxxEvent.Listener interfaces.
 	 *
 	 * A listener can implement multiple interfaces. No lengthy operations
 	 * should take place in the callbacks, they should return as soon as possible.
@@ -45,7 +70,7 @@ public class TelldusInterface {
 	}
 
 	/**
-	 * Unregister a previously registered event listener.s
+	 * Unregister a previously registered event listener.
 	 */
 	public void unregisterListener(TelldusEvent.Listener listener) {
 		client.unregisterEventListener(listener);
