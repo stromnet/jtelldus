@@ -35,6 +35,13 @@ public class TDControllerEvent extends TelldusEvent {
 		return newValue;
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName()+
+						"[controllerId="+controllerId+", changeEvent="+changeEvent+
+						 ", changeType="+changeType+", newValue="+newValue+"]";
+	}
+
 	public interface Listener extends TelldusEvent.Listener {
 		void onTDControllerEvent(TDControllerEvent event);
 	}

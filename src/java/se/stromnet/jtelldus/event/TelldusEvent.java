@@ -11,4 +11,9 @@ public abstract class TelldusEvent {
 	public interface Listener {
 		/* Dummy base for all listeners */
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName()+"[]";
+	}
 }

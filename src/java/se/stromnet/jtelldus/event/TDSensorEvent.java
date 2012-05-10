@@ -23,6 +23,11 @@ public class TDSensorEvent extends TelldusEvent {
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName()+"[sensor="+sensor+", value="+value+"]";
+	}
+
 	public interface Listener extends TelldusEvent.Listener {
 		void onTDSensorEvent(TDSensorEvent event);
 	}
