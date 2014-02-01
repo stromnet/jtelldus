@@ -24,6 +24,7 @@ public class MessageTest {
 		b = ByteBuffer.allocate(1000);
 
 		b.put("5:abcde".getBytes());
+		b.flip(); // Switch to reading from buffer
 
 		assertFalse(Message.nextIsInt(b));
 		assertFalse(Message.nextIsInt(b));
@@ -35,7 +36,10 @@ public class MessageTest {
 		assertEquals("abcde", Message.takeString(b));
 		//assertFalse(b.hasRemaining());
 
+		b.compact();
 		b.put("i55s".getBytes());
+		b.flip(); // Switch to reading from buffer
+
 		assertTrue(Message.nextIsInt(b));
 		assertTrue(Message.nextIsInt(b));
 		assertTrue(Message.nextIsInt(b));
@@ -47,8 +51,10 @@ public class MessageTest {
 		assertEquals(55, Message.takeInt(b));
 		//assertFalse(b.hasRemaining());
 
-
+		b.compact();
 		b.put("5:abcdei99999s2:OK".getBytes());
+		b.flip(); // Switch to reading from buffer
+
 		assertFalse(Message.nextIsInt(b));
 		assertTrue(Message.nextIsString(b));
 		assertEquals("abcde", Message.takeString(b));
@@ -66,7 +72,10 @@ public class MessageTest {
 
 
 		// Test some crap
+		b.compact();
 		b.put("abcd".getBytes());
+		b.flip(); // Switch to reading from buffer
+
 		assertFalse(Message.nextIsInt(b));
 		assertFalse(Message.nextIsString(b));
 		try {
@@ -84,6 +93,8 @@ public class MessageTest {
 
 		// Test some partial
 		b.put("5:abcd".getBytes());
+		b.flip(); // Switch to reading from buffer
+
 		assertFalse(Message.nextIsInt(b));
 		assertTrue(Message.nextIsString(b));
 		try {
@@ -92,13 +103,16 @@ public class MessageTest {
 		}catch(BufferUnderflowException ex) {}
 		
 		b.put("e".getBytes());
+		b.flip(); // Switch to reading from buffer
 		assertFalse(Message.nextIsInt(b));
 		assertTrue(Message.nextIsString(b));
 		assertEquals("abcde", Message.takeString(b));
 
 
 		// Test some real
+		b.compact();
 		b.put("13:TDDeviceEventi1si1s1:013:TDDeviceEventi1si2s1:0".getBytes());
+		b.flip(); // Switch to reading from buffer
 		assertTrue(Message.nextIsString(b));
 		assertEquals("TDDeviceEvent", Message.takeString(b));
 
@@ -128,6 +142,8 @@ public class MessageTest {
 	@Test public void testBBConstructor() {
 		b = ByteBuffer.allocate(1000);
 		b.put("13:TDDeviceEventi1si1s1:0".getBytes());
+		b.flip(); // Switch to reading from buffer
+
 
 		m = new Message(b);
 		assertTrue(m.nextIsString());

@@ -1,11 +1,14 @@
 package se.stromnet.jtelldus;
 
 import se.stromnet.jtelldus.event.TelldusEvent;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import se.stromnet.jtelldus.Protocol.ErrorCode;
 import se.stromnet.jtelldus.event.EventDispatcher;
 import se.stromnet.jtelldus.event.EventFactory;
@@ -81,11 +84,16 @@ public class TelldusClient implements Runnable {
 				while (run) {
 					if(log.isTraceEnabled())
 						log.trace("Reading...");
-					
-					int len = events.read(bb);
 
-					if(log.isTraceEnabled())
-						log.trace("Got "+ len +" bytes on socket");
+					if (bb.position() == 0) {
+						int len = events.read(bb);
+						if(log.isTraceEnabled())
+							log.trace("Got "+ len +" bytes on socket");
+					} else {
+						// Bytes left in buffer, skipping read
+					}
+					bb.flip(); // Switch to reading from buffer
+
 
 					if (!Message.nextIsString(bb)) {
 						throw new IllegalStateException("Illegal data in buffer, expected string");
@@ -95,7 +103,11 @@ public class TelldusClient implements Runnable {
 					if(!handleEvent(msg)) {
 						// Unhandled; clear out bb
 						log.info("Unhandled event. "+bb.remaining()+" bytes data left in buffer, throwing it away");
+
+						// We could not parse the event. This could be due to partial read. Restore the state of the buffer, and try to read some more data
 						bb.clear();
+					} else {
+						bb.compact(); // Make the buffer ready for writing to buffer
 					}
 				}
 			} catch(ClosedByInterruptException ex) {
@@ -151,6 +163,7 @@ public class TelldusClient implements Runnable {
 
 	protected int getIntegerFromService(Message m) {
 		ByteBuffer bb = sendToService(m);
+		bb.flip(); // Switch to reading from buffer
 
 		return Message.takeInt(bb);
 	}
