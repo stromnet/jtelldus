@@ -98,9 +98,6 @@ public class Message {
 	}
 
 	public static boolean nextIsInt(ByteBuffer msg) {
-		if(msg.position() != 0)
-			msg.flip();
-
 		if(msg == null || !msg.hasRemaining())
 			return false;
 
@@ -112,9 +109,6 @@ public class Message {
 	}
 
 	public static boolean nextIsString(ByteBuffer msg) {
-		if(msg.position() != 0)
-			msg.flip();
-
 		if(msg == null || !msg.hasRemaining())
 			return false;
 
@@ -129,7 +123,7 @@ public class Message {
 		if(!nextIsInt(msg))
 			throw new BufferUnderflowException();
 
-		msg.position(1); // Skip 'i'
+		msg.get(); // Skip 'i'
 
 		// Read until 's'. There are probably more elegant solutinos to this
 		// but since we're dealing with stringified numbers, and my NIO Buffer
@@ -145,11 +139,7 @@ public class Message {
 			sb.append(Character.toString((char) b));
 		}
 
-		int ret = Integer.parseInt(sb.toString());
-
-		msg.compact();
-
-		return ret;
+		return Integer.parseInt(sb.toString());
 	}
 
 	public static String takeString(ByteBuffer msg) {
@@ -182,8 +172,6 @@ public class Message {
 		// Read this many bytes
 		byte[] buf = new byte[len];
 		msg.get(buf);
-
-		msg.compact();
 
 		try {
 			return new String(buf, "UTF-8");
