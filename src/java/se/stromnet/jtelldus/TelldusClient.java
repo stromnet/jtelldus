@@ -170,6 +170,7 @@ public class TelldusClient implements Runnable {
 
 	protected String getStringFromService(Message m) {
 		ByteBuffer bb = sendToService(m);
+		bb.flip(); // Switch to reading from buffer
 
 		return Message.takeString(bb);
 	}
