@@ -2,7 +2,11 @@ package se.stromnet.jtelldus.event;
 
 import org.junit.Test;
 import se.stromnet.jtelldus.Message;
-import se.stromnet.jtelldus.Protocol.*;
+import se.stromnet.jtelldus.Protocol.ChangeEvent;
+import se.stromnet.jtelldus.Protocol.ChangeType;
+import se.stromnet.jtelldus.Protocol.DeviceMethod;
+import se.stromnet.jtelldus.Protocol.SensorValueType;
+
 import static org.junit.Assert.*;
 
 /**
@@ -88,7 +92,7 @@ public class EventFactoryTest {
 		assertEquals("someProtocol", e.getSensor().getProtocol());
 		assertEquals("someModel", e.getSensor().getModel());
 		assertEquals(123, e.getSensor().getId());
-		assertEquals(SensorValueType.HUMIDITY, e.getSensor().getDataType());
+		assertEquals(SensorValueType.HUMIDITY, e.getSensorValue().getDataType());
 		assertEquals("80%", e.getSensorValue().getValue());
 		assertEquals(123441242, e.getSensorValue().getTimestamp());
 	}

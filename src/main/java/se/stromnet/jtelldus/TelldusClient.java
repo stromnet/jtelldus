@@ -1,17 +1,14 @@
 package se.stromnet.jtelldus;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import se.stromnet.jtelldus.event.EventDispatcher;
+import se.stromnet.jtelldus.event.EventFactory;
 import se.stromnet.jtelldus.event.TelldusEvent;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import se.stromnet.jtelldus.Protocol.ErrorCode;
-import se.stromnet.jtelldus.event.EventDispatcher;
-import se.stromnet.jtelldus.event.EventFactory;
 
 /**
  * Implements the client communications. Opens up one event socket, and provides
@@ -46,6 +43,7 @@ public class TelldusClient implements Runnable {
 		events = new TelldusSocket(host, eventPort);
 
 		thread = new Thread(this);
+		thread.setName(this.getClass().getSimpleName() + "-" + thread.getId());
 		thread.start();
 	}
 
@@ -66,7 +64,6 @@ public class TelldusClient implements Runnable {
 	 * Main loop for separate Thread. keeps connection to event socket
 	 * alive and reads events.
 	 */
-	@Override
 	public void run() {
 		while (run) {
 			if (!events.connect()) {
@@ -158,7 +155,7 @@ public class TelldusClient implements Runnable {
 
 	/** Controlling help functions **/
 	protected boolean getBoolFromService(Message m) {
-		return getIntegerFromService(m) == ErrorCode.SUCCESS.code();
+		return getIntegerFromService(m) == Protocol.ErrorCode.SUCCESS.code();
 	}
 
 	protected int getIntegerFromService(Message m) {

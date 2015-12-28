@@ -23,7 +23,10 @@ public class TDRawDeviceEvent extends TelldusEvent {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[controller="+controllerId+", data="+data+"]";
+		return "TDRawDeviceEvent{" +
+				"data='" + data + '\'' +
+				", controllerId=" + controllerId +
+				'}';
 	}
 
 	public interface Listener extends TelldusEvent.Listener {

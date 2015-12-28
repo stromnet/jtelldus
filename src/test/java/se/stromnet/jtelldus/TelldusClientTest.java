@@ -1,7 +1,8 @@
 package se.stromnet.jtelldus;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import se.stromnet.jtelldus.Protocol.*;
+import se.stromnet.jtelldus.Protocol.DeviceType;
 
 /**
  *
@@ -9,8 +10,9 @@ import se.stromnet.jtelldus.Protocol.*;
  */
 public class TelldusClientTest {
 
-	@Test
-	public void testReal() throws Exception {
+    @Ignore
+    @Test
+    public void testReal() throws Exception {
 		TelldusInterface td = new TelldusInterface("172.28.1.2", 9998, 9999);
 
 		int devices = td.tdGetNumberOfDevices();

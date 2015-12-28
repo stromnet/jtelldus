@@ -33,11 +33,11 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown device method " +code);
 		}
-	};
+	}
 
 	public enum SensorValueType {
-		TEMPERATURE(0),
-		HUMIDITY(1);
+		TEMPERATURE(1),
+		HUMIDITY(2);
 
 		private int code;
 		private SensorValueType(int code) { this.code = code; }
@@ -80,7 +80,7 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown error code " +code);
 		}
-	};
+	}
 
 	public enum DeviceType {
 		TYPE_DEVICE(1),
@@ -98,7 +98,7 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown device type " +code);
 		}
-	};
+	}
 
 
 	public enum ControllerType {
@@ -117,7 +117,7 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown controller type " +code);
 		}
-	};
+	}
 	
 
 	public enum ChangeEvent {
@@ -140,7 +140,7 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown change event " +code);
 		}
-	};
+	}
 
 	public enum ChangeType {
 		CHANGE_NAME(1),
@@ -164,5 +164,5 @@ public class Protocol {
 			}
 			throw new IllegalArgumentException("Unknown change type " +code);
 		}
-	};
+	}
 }

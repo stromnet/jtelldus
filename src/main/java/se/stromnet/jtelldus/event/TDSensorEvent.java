@@ -25,7 +25,10 @@ public class TDSensorEvent extends TelldusEvent {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[sensor="+sensor+", value="+value+"]";
+		return "TDSensorEvent{" +
+				"sensor=" + sensor +
+				", value=" + value +
+				'}';
 	}
 
 	public interface Listener extends TelldusEvent.Listener {

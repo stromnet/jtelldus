@@ -8,6 +8,13 @@ public abstract class TelldusDeviceEvent extends TelldusEvent {
 		this.deviceId = deviceId;
 	}
 
+	@Override
+	public String toString() {
+		return "TelldusDeviceEvent{" +
+				"deviceId=" + deviceId +
+				'}';
+	}
+
 	public int getDeviceId() {
 		return deviceId;
 	}

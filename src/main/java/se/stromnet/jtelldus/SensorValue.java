@@ -9,6 +9,7 @@ package se.stromnet.jtelldus;
  */
 public class SensorValue
 {
+	private Protocol.SensorValueType dataType;
 	private String value;
 	private int timestamp;
 
@@ -28,17 +29,28 @@ public class SensorValue
 		load(msg);
 	}
 
+	public Protocol.SensorValueType getDataType() {
+		return dataType;
+	}
+
 	/**
 	 * Updates data from message. Assumes message has fields, in order:
 	 *
 	 *	String value
+
 	 *	Int timestamp
 	 *
 	 * This holds true for both tdSensorValue call and TDSensorEvent.
 	 *
-	 * @param src Message with fields according to above.
+	 * @param msg Message with fields according to above.
 	 */
 	public void load(Message msg) {
+		int dt = msg.takeInt();
+		for (Protocol.SensorValueType svt : Protocol.SensorValueType.values()) {
+			if (dt == svt.code()) {
+				dataType = svt;
+			}
+		}
 		value = msg.takeString();
 		timestamp = msg.takeInt();
 	}
@@ -49,5 +61,15 @@ public class SensorValue
 
 	public int getTimestamp() {
 		return timestamp;
+	}
+
+
+	@Override
+	public String toString() {
+		return "SensorValue{" +
+				"dataType=" + dataType +
+				", value='" + value + '\'' +
+				", timestamp=" + timestamp +
+				'}';
 	}
 }
