@@ -36,12 +36,25 @@ public class Protocol {
 	}
 
 	public enum SensorValueType {
-		TEMPERATURE(1),
-		HUMIDITY(2);
-
+		TEMPERATURE(1, ""),
+		HUMIDITY(2, "%"),
+		RAINRATE(4, "mm/h"),
+		RAINTOTAL(8, "mm"),
+		WINDDIRECTION(16, ""),
+		WINDAVERAGE(32, "m/s"),
+		WINDGUST(64, "m/s");
 		private int code;
-		private SensorValueType(int code) { this.code = code; }
+		private String unit;
+
+		private SensorValueType(int code, String unit) {
+			this.code = code;
+			this.unit = unit;
+		}
 		public int code() { return code; }
+
+		public String unit() {
+			return unit;
+		}
 
 		public static SensorValueType fromCode(int code) {
 			for (SensorValueType dm : SensorValueType.values()) {

@@ -46,13 +46,65 @@ public class SensorValue
 	 */
 	public void load(Message msg) {
 		int dt = msg.takeInt();
-		for (Protocol.SensorValueType svt : Protocol.SensorValueType.values()) {
-			if (dt == svt.code()) {
-				dataType = svt;
-			}
-		}
+		dataType = Protocol.SensorValueType.fromCode(dt);
 		value = msg.takeString();
 		timestamp = msg.takeInt();
+		switch (dataType) {
+			case WINDDIRECTION:
+				int direction = Integer.parseInt(value);
+				switch (direction) {
+					case 0:
+						value = "N";
+						break;
+					case 1:
+						value = "NNE";
+						break;
+					case 2:
+						value = "NE";
+						break;
+					case 3:
+						value = "ENE";
+						break;
+					case 4:
+						value = "E";
+						break;
+					case 5:
+						value = "ESE";
+						break;
+					case 6:
+						value = "SE";
+						break;
+					case 7:
+						value = "SSE";
+						break;
+					case 8:
+						value = "S";
+						break;
+					case 9:
+						value = "SSW";
+						break;
+					case 10:
+						value = "SW";
+						break;
+					case 11:
+						value = "WSW";
+						break;
+					case 12:
+						value = "W";
+						break;
+					case 13:
+						value = "WNW";
+						break;
+					case 14:
+						value = "NW";
+						break;
+					case 15:
+						value = "NNW";
+						break;
+				}
+				break;
+
+		}
 	}
 
 	public String getValue() {
