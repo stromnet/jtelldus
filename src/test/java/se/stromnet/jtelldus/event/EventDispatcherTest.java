@@ -1,9 +1,13 @@
 package se.stromnet.jtelldus.event;
 
-import se.stromnet.jtelldus.Protocol.*;
-import se.stromnet.jtelldus.Message;
 import org.junit.Before;
 import org.junit.Test;
+import se.stromnet.jtelldus.Message;
+import se.stromnet.jtelldus.Protocol.ChangeEvent;
+import se.stromnet.jtelldus.Protocol.ChangeType;
+import se.stromnet.jtelldus.Protocol.DeviceMethod;
+import se.stromnet.jtelldus.Protocol.SensorValueType;
+
 import static org.junit.Assert.*;
 
 /**

@@ -1,8 +1,10 @@
 package se.stromnet.jtelldus;
 
+import org.junit.Test;
+
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**

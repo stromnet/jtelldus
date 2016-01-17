@@ -1,14 +1,15 @@
 package se.stromnet.jtelldus;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import se.stromnet.jtelldus.Protocol.ControllerType;
 import se.stromnet.jtelldus.Protocol.DeviceMethod;
 import se.stromnet.jtelldus.Protocol.DeviceType;
 import se.stromnet.jtelldus.Protocol.ErrorCode;
 import se.stromnet.jtelldus.event.TelldusEvent;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Entry point for applications utilizing jtellduslib.
@@ -81,7 +82,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to turn on.
+	 * @param deviceId The device id to turn on.
 	 **/
 	public int tdTurnOn(int deviceId) {
 		Message m = new Message("tdTurnOn");
@@ -94,7 +95,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to turn off.
+	 * @param deviceId The device id to turn off.
 	 */
 	public int tdTurnOff(int deviceId) {
 		Message m = new Message("tdTurnOff");
@@ -107,7 +108,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to send bell to
+	 * @param deviceId The device id to send bell to
 	 */
 	public int tdBell(int deviceId) {
 		Message m = new Message("tdBell");
@@ -120,7 +121,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to dim
+	 * @param deviceId The device id to dim
 	 * @param level The level the device should dim to. This value should be 0-255
 	 */
 	public int tdDim(int deviceId, int level) {
@@ -135,7 +136,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The id to execute
+	 * @param deviceId The id to execute
 	 */
 	public int tdExecute(int deviceId) {
 		Message m = new Message("tdExecute");
@@ -148,7 +149,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to send the command to
+	 * @param deviceId The device id to send the command to
 	 */
 	public int tdUp(int deviceId) {
 		Message m = new Message("tdUp");
@@ -161,7 +162,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to send the command to
+	 * @param deviceId The device id to send the command to
 	 */
 	public int tdDown(int deviceId) {
 		Message m = new Message("tdDown");
@@ -174,7 +175,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to stop
+	 * @param deviceId The device id to stop
 	 */
 	public int tdStop(int deviceId) {
 		Message m = new Message("tdStop");
@@ -188,7 +189,7 @@ public class TelldusInterface {
 	 * Make sure the device supports this by calling tdMethods() before any
 	 * call to this function.
 	 *
-	 * @param intDeviceId The device id to learn.
+	 * @param deviceId The device id to learn.
 	 */
 	public int tdLearn(int deviceId) {
 		Message m = new Message("tdLearn");
@@ -199,7 +200,7 @@ public class TelldusInterface {
 	/**
 	 * Returns the last sent command to a specific device
 	 *
-	 * @param intDeviceId The device id to query
+	 * @param deviceId The device id to query
 	 * @param methodsSupported The methods supported by the client. See tdMethods() for more information.
 	 *
 	 * @return the last sent command as Protocol.DeviceMethod.
@@ -214,7 +215,7 @@ public class TelldusInterface {
 	/**
 	 * If the last sent command it TELLSTICK_DIM this returns the dimmed value.
 	 *
-	 * @param intDeviceId The device id to query
+	 * @param deviceId The device id to query
 	 *
 	 * @return the the value as a human readable string, example "128" for 50%
 	 */

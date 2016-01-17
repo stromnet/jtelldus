@@ -1,12 +1,13 @@
 package se.stromnet.jtelldus;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 /**
  * Main entry point for communicating with Telldusd.
@@ -27,7 +28,7 @@ public class TelldusSocket {
 		if(socket != null)
 			return true;
 
-		log.debug("Connecting to "+sa+"..");
+		log.debug("Connecting to " + sa);
 		try {
 			socket = SocketChannel.open();
 			socket.configureBlocking(true);

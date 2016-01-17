@@ -2,7 +2,11 @@ package se.stromnet.jtelldus.event;
 
 import org.junit.Test;
 import se.stromnet.jtelldus.Message;
-import se.stromnet.jtelldus.Protocol.*;
+import se.stromnet.jtelldus.Protocol.ChangeEvent;
+import se.stromnet.jtelldus.Protocol.ChangeType;
+import se.stromnet.jtelldus.Protocol.DeviceMethod;
+import se.stromnet.jtelldus.Protocol.SensorValueType;
+
 import static org.junit.Assert.*;
 
 /**
@@ -69,7 +73,7 @@ public class EventFactoryTest {
 
 
 	@Test
-	public void testTDSensorEvent() {
+	public void testHumidityTDSensorEvent() {
 		Message msg = new Message();
 
 		msg.addArgument("TDSensorEvent");
@@ -77,7 +81,7 @@ public class EventFactoryTest {
 		msg.addArgument("someModel");
 		msg.addArgument(123);
 		msg.addArgument(SensorValueType.HUMIDITY.code());
-		msg.addArgument("80%");
+		msg.addArgument("80");
 		msg.addArgument(123441242); // XXX: This is really sent as C int; ugly casted from time_t...
 
 		msg = new Message(msg.serialize());
@@ -88,8 +92,33 @@ public class EventFactoryTest {
 		assertEquals("someProtocol", e.getSensor().getProtocol());
 		assertEquals("someModel", e.getSensor().getModel());
 		assertEquals(123, e.getSensor().getId());
-		assertEquals(SensorValueType.HUMIDITY, e.getSensor().getDataType());
-		assertEquals("80%", e.getSensorValue().getValue());
+		assertEquals(SensorValueType.HUMIDITY, e.getSensorValue().getDataType());
+		assertEquals("80", e.getSensorValue().getValue());
+		assertEquals(123441242, e.getSensorValue().getTimestamp());
+	}
+
+	@Test
+	public void testWinddirectionTDSensorEvent() {
+		Message msg = new Message();
+
+		msg.addArgument("TDSensorEvent");
+		msg.addArgument("someProtocol");
+		msg.addArgument("someModel");
+		msg.addArgument(123);
+		msg.addArgument(SensorValueType.WINDDIRECTION.code());
+		msg.addArgument("15");
+		msg.addArgument(123441242); // XXX: This is really sent as C int; ugly casted from time_t...
+
+		msg = new Message(msg.serialize());
+
+		TDSensorEvent e = (TDSensorEvent) EventFactory.createEvent(msg);
+
+		assertNotNull(e);
+		assertEquals("someProtocol", e.getSensor().getProtocol());
+		assertEquals("someModel", e.getSensor().getModel());
+		assertEquals(123, e.getSensor().getId());
+		assertEquals(SensorValueType.WINDDIRECTION, e.getSensorValue().getDataType());
+		assertEquals("NNW", e.getSensorValue().getValue());
 		assertEquals(123441242, e.getSensorValue().getTimestamp());
 	}
 

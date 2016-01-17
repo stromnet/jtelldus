@@ -28,7 +28,10 @@ public class TDDeviceEvent extends TelldusDeviceEvent {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[method="+method+", stateValue="+stateValue+"]";
+		return "TDDeviceEvent{" +
+				"method=" + method +
+				", stateValue='" + stateValue + '\'' +
+				'}';
 	}
 
 	public interface Listener extends TelldusEvent.Listener {

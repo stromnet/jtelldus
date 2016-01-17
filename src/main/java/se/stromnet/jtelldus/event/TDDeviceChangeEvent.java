@@ -31,7 +31,10 @@ public class TDDeviceChangeEvent extends TelldusDeviceEvent {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[changeEvent="+changeEvent+", changeType="+changeType+"]";
+		return "TDDeviceChangeEvent{" +
+				"changeEvent=" + changeEvent +
+				", changeType=" + changeType +
+				'}';
 	}
 
 	public interface Listener extends TelldusEvent.Listener {
